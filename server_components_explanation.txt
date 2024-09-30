@@ -1,0 +1,96 @@
+Server Components and Database Folder Explanation
+
+1. Server Components Folder (/server)
+
+The server components folder contains files that are specifically used for server-side operations. These files are not sent to the client and are only executed on the server. The main components in this folder are:
+
+a. authjs-handler.ts
+   - Purpose: Handles authentication using AuthJS (NextAuth.js).
+   - Functionality: Sets up authentication routes, strategies, and callbacks.
+   - Usage: Integrates with the main Express server to provide authentication services.
+
+b. vike-handler.ts
+   - Purpose: Configures and sets up the Vike (formerly Vite Plugin SSR) handler.
+   - Functionality: Integrates Vike with the Express server for server-side rendering.
+   - Usage: Processes incoming requests and renders the appropriate pages using Vike.
+
+c. create-todo-handler.ts
+   - Purpose: Handles the creation of new todo items.
+   - Functionality: Processes POST requests to create new todos, interacting with the database.
+   - Usage: Called when a user submits a new todo item through the application.
+
+2. Database Folder (/database)
+
+The database folder contains files related to data storage and retrieval. In this project, it seems to be using a simple in-memory or file-based storage system rather than a full-fledged database. The main component in this folder is:
+
+a. todoItems.ts
+   - Purpose: Manages the storage and retrieval of todo items.
+   - Functionality: Likely contains functions to add, remove, update, and fetch todo items.
+   - Usage: Acts as a data layer between the server handlers and the actual data storage.
+
+These server-side components and the database folder work together to:
+1. Handle authentication and user sessions
+2. Process server-side rendering of pages
+3. Manage data operations for todo items
+4. Keep sensitive operations and data handling separate from client-side code
+
+By organizing the code this way, the project maintains a clear separation between client-side and server-side logic, enhancing security and allowing for more efficient server-side operations.
+
+3. Components Folder (/components)
+
+The components folder contains reusable React components used throughout the application. One important component in this folder is:
+
+a. Link.tsx
+   - Purpose: Provides a custom Link component for navigation within the Vike application.
+   - Functionality: 
+     * Wraps the native <a> tag with additional functionality.
+     * Implements client-side navigation using Vike's routing system.
+     * Prevents full page reloads for internal links, improving performance and user experience.
+   - Usage: 
+     * Used in place of standard <a> tags for internal navigation.
+     * Example: <Link href="/about">About</Link>
+   - Benefits:
+     * Enables smooth, SPA-like navigation between pages.
+     * Preserves application state during navigation.
+     * Allows for prefetching of linked pages for faster perceived loading times.
+
+The Link component is crucial for maintaining the single-page application (SPA) feel in a Vike project, allowing for seamless transitions between different routes without full page reloads.
+
+4. Express Entry File (express-entry.ts)
+
+The express-entry.ts file is a crucial part of the project structure, serving as the main entry point for the Express server application. Its primary purposes and functionalities include:
+
+a. Server Initialization
+   - Purpose: Sets up and configures the Express server.
+   - Functionality: Creates an instance of the Express application and configures middleware.
+
+b. Route Integration
+   - Purpose: Integrates various route handlers and middleware.
+   - Functionality: 
+     * Incorporates authentication routes from authjs-handler.ts
+     * Sets up API routes for todo item creation (create-todo-handler.ts)
+     * Integrates the Vike handler for server-side rendering (vike-handler.ts)
+
+c. Server Startup
+   - Purpose: Starts the Express server and listens for incoming requests.
+   - Functionality: Specifies the port for the server to listen on and logs server start information.
+
+d. Environment Configuration
+   - Purpose: Handles environment-specific configurations.
+   - Functionality: May load environment variables or set different configurations based on the development or production environment.
+
+e. Error Handling
+   - Purpose: Sets up global error handling for the Express application.
+   - Functionality: Defines error middleware to catch and process any errors that occur during request handling.
+
+f. Static File Serving
+   - Purpose: Configures serving of static files (if applicable).
+   - Functionality: Sets up middleware to serve static files like CSS, JavaScript, and images.
+
+The express-entry.ts file acts as the orchestrator of the server-side components, bringing together various parts of the application and ensuring they work cohesively. It's the starting point when running the server and plays a critical role in the overall architecture of the Vike project.
+
+Usage:
+- Typically run using a command like `node express-entry.js` or through a start script in package.json.
+- In development, it might be integrated with tools like nodemon for automatic server restarts during code changes.
+
+By centralizing server setup and route management in express-entry.ts, the project maintains a clear and organized structure for server-side operations, making it easier to manage and scale the application.

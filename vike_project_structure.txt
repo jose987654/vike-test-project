@@ -1,0 +1,115 @@
+# Vike Project Structure and Request Routing
+
+## Overview
+This project uses Vike, a flexible and powerful framework for building server-side rendered (SSR) React applications. Vike provides a file-based routing system and allows for easy customization of the rendering process.
+
+## Key Components
+
+1. Pages Directory
+   - The `pages/` directory is the heart of Vike's routing system.
+   - Each file or directory in `pages/` corresponds to a route in your application.
+
+2. Page Files
+   - Page files (e.g., `index.page.tsx`) define the content for each route.
+   - They export a default React component that Vike renders for that route.
+
+3. Route Parameters
+   - Dynamic routes can be created using square brackets, e.g., `pages/users/[id].page.tsx`.
+
+4. Layout Files
+   - `+layout.tsx` files define layouts that wrap page content.
+   - They can be nested to create hierarchical layouts.
+
+5. Config Files
+   - `+config.ts` files allow you to customize the behavior of pages or entire directories.
+
+6. Head Components
+   - `+Head.tsx` files define custom `<head>` content for pages or sections.
+
+7. Server-only Files
+   - Files with the `.server.ts` extension contain code that only runs on the server.
+
+8. Client-only Files
+   - Files with the `.client.ts` extension contain code that only runs in the browser.
+
+## How Vike Routes Requests
+
+1. Incoming Request
+   - When a request comes in, Vike matches the URL to the corresponding file in the `pages/` directory.
+
+2. Route Matching
+   - Vike uses the file system structure to determine which page should be rendered.
+   - For example, `/about` would match `pages/about.page.tsx`.
+
+3. Layout Application
+   - Vike looks for applicable `+layout.tsx` files, starting from the root and moving down to the specific page.
+
+4. Server-side Rendering
+   - Vike renders the matched page component (and its layouts) on the server.
+   - It also executes any server-side code (`.server.ts` files) associated with the route.
+
+5. Head Content
+   - The appropriate `+Head.tsx` component is rendered to generate `<head>` content.
+
+6. HTML Generation
+   - Vike generates the full HTML document, including the rendered React components and head content.
+
+
+7. Client-side Navigation
+   - For subsequent navigation, Vike uses client-side routing when possible, fetching only the necessary data and components.
+
+Server Components and Database 
+
+1. Server Components Folder (/server)
+
+The server components folder contains files that are specifically used for server-side operations. These files are not sent to the client and are only executed on the server. The main components in this folder are:
+
+a. authjs-handler.ts
+   - Purpose: Handles authentication using AuthJS (NextAuth.js).
+   - Functionality: Sets up authentication routes, strategies, and callbacks.
+   - Usage: Integrates with the main Express server to provide authentication services.
+
+b. vike-handler.ts
+   - Purpose: Configures and sets up the Vike (formerly Vite Plugin SSR) handler.
+   - Functionality: Integrates Vike with the Express server for server-side rendering.
+   - Usage: Processes incoming requests and renders the appropriate pages using Vike.
+
+c. create-todo-handler.ts
+   - Purpose: Handles the creation of new todo items.
+   - Functionality: Processes POST requests to create new todos, interacting with the database.
+   - Usage: Called when a user submits a new todo item through the application.
+
+2. Database Folder (/database)
+
+The database folder contains files related to data storage and retrieval. In this project, it seems to be using a simple in-memory or file-based storage system rather than a full-fledged database. The main component in this folder is:
+
+a. todoItems.ts
+   - Purpose: Manages the storage and retrieval of todo items.
+   - Functionality: Likely contains functions to add, remove, update, and fetch todo items.
+   - Usage: Acts as a data layer between the server handlers and the actual data storage.
+
+These server-side components and the database folder work together to:
+1. Handle authentication and user sessions
+2. Process server-side rendering of pages
+3. Manage data operations for todo items
+4. Keep sensitive operations and data handling separate from client-side code
+
+By organizing the code this way, the project maintains a clear separation between client-side and server-side logic, enhancing security and allowing for more efficient server-side operations.
+
+The components folder contains reusable React components used throughout the application. One important component in this folder is:
+
+a. Link.tsx
+   - Purpose: Provides a custom Link component for navigation within the Vike application.
+   - Functionality: 
+     * Wraps the native <a> tag with additional functionality.
+     * Implements client-side navigation using Vike's routing system.
+     * Prevents full page reloads for internal links, improving performance and user experience.
+   - Usage: 
+     * Used in place of standard <a> tags for internal navigation.
+     * Example: <Link href="/about">About</Link>
+   - Benefits:
+     * Enables smooth, SPA-like navigation between pages.
+     * Preserves application state during navigation.
+     * Allows for prefetching of linked pages for faster perceived loading times.
+
+The Link component is crucial for maintaining the single-page application (SPA) feel in a Vike project, allowing for seamless transitions between different routes without full page reloads.
